@@ -63,6 +63,21 @@ app.post(`/quizzes`, (req, res) => {
     return res.status(201).json(quizzes)
 })
 
+// patch - atualizar parte do recuso
+app.patch(`/quizzes/:id`, (req, res) => {
+    const { _id, title, active } = req.body
+    console.log('req.body (antes)', req.body)
+    const quizze = quizzes.find(o => `${o._id}` === req.params.id);
+    //console.log(quizze)
+
+    // Não permitir que altere o id
+    quizze._id = quizze._id
+    quizze.title = title ? title : quizze.title
+    quizze.active = active ? active : quizze.active
+
+    return res.status(200).json(quizze)
+})
+
 // https://bobbyhadz.com/blog/javascript-remove-object-from-array-by-value#:~:text=To%20remove%20an%20object%20from,removing%20or%20replacing%20existing%20elements.
 app.delete(`/quizzes/:id`, (req, res) => {
     const indexOfObject = quizzes.findIndex(o => o._id == req.params.id);
